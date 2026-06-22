@@ -1,1 +1,203 @@
+-- ==========================================
+-- COPA DO MUNDO 2026
+-- SCRIPT DE INSERÇÃO DE DADOS
+-- PostgreSQL
+-- ==========================================
 
+-- ==========================================
+-- PAÍSES
+-- ==========================================
+
+INSERT INTO pais (nome_pais, continente) VALUES
+('Brasil', 'América do Sul'),
+('Argentina', 'América do Sul'),
+('França', 'Europa'),
+('Inglaterra', 'Europa'),
+('Portugal', 'Europa'),
+('Espanha', 'Europa');
+
+-- ==========================================
+-- GRUPOS
+-- ==========================================
+
+INSERT INTO grupo (nome_grupo) VALUES
+('A'),
+('B'),
+('C'),
+('D'),
+('E'),
+('F');
+
+-- ==========================================
+-- TIMES
+-- ==========================================
+
+INSERT INTO time (nome_time, id_pais, id_grupo) VALUES
+('Seleção Brasileira', 1, 1),
+('Seleção Argentina', 2, 2),
+('Seleção Francesa', 3, 3),
+('Seleção Inglesa', 4, 4),
+('Seleção Portuguesa', 5, 5),
+('Seleção Espanhola', 6, 6);
+
+-- ==========================================
+-- PESSOAS (JOGADORES)
+-- ==========================================
+
+INSERT INTO pessoa (nome, cpf, data_nascimento, nacionalidade) VALUES
+
+-- BRASIL
+('Vinicius Junior', '11111111111', '2000-07-12', 'Brasileira'),
+('Rodrygo', '11111111112', '2001-01-09', 'Brasileira'),
+('Raphinha', '11111111113', '1996-12-14', 'Brasileira'),
+
+-- ARGENTINA
+('Lionel Messi', '11111111114', '1987-06-24', 'Argentina'),
+('Julian Alvarez', '11111111115', '2000-01-31', 'Argentina'),
+('Enzo Fernandez', '11111111116', '2001-01-17', 'Argentina'),
+
+-- FRANÇA
+('Kylian Mbappe', '11111111117', '1998-12-20', 'Francesa'),
+('Ousmane Dembele', '11111111118', '1997-05-15', 'Francesa'),
+('Aurelien Tchouameni', '11111111119', '2000-01-27', 'Francesa'),
+
+-- INGLATERRA
+('Harry Kane', '11111111120', '1993-07-28', 'Inglesa'),
+('Jude Bellingham', '11111111121', '2003-06-29', 'Inglesa'),
+('Bukayo Saka', '11111111122', '2001-09-05', 'Inglesa'),
+
+-- PORTUGAL
+('Cristiano Ronaldo', '11111111123', '1985-02-05', 'Portuguesa'),
+('Bruno Fernandes', '11111111124', '1994-09-08', 'Portuguesa'),
+('Bernardo Silva', '11111111125', '1994-08-10', 'Portuguesa'),
+
+-- ESPANHA
+('Lamine Yamal', '11111111126', '2007-07-13', 'Espanhola'),
+('Pedri', '11111111127', '2002-11-25', 'Espanhola'),
+('Rodri', '11111111128', '1996-06-22', 'Espanhola');
+
+-- ==========================================
+-- JOGADORES
+-- ==========================================
+
+INSERT INTO jogador (id_pessoa, numero_camisa, posicao, id_time) VALUES
+
+-- BRASIL
+(1, 7, 'Atacante', 1),
+(2, 11, 'Atacante', 1),
+(3, 10, 'Atacante', 1),
+
+-- ARGENTINA
+(4, 10, 'Atacante', 2),
+(5, 9, 'Atacante', 2),
+(6, 8, 'Meio-Campo', 2),
+
+-- FRANÇA
+(7, 10, 'Atacante', 3),
+(8, 11, 'Atacante', 3),
+(9, 8, 'Meio-Campo', 3),
+
+-- INGLATERRA
+(10, 9, 'Atacante', 4),
+(11, 10, 'Meio-Campo', 4),
+(12, 7, 'Atacante', 4),
+
+-- PORTUGAL
+(13, 7, 'Atacante', 5),
+(14, 8, 'Meio-Campo', 5),
+(15, 10, 'Meio-Campo', 5),
+
+-- ESPANHA
+(16, 19, 'Atacante', 6),
+(17, 8, 'Meio-Campo', 6),
+(18, 16, 'Volante', 6);
+
+-- ==========================================
+-- PESSOAS (ÁRBITROS)
+-- ==========================================
+
+INSERT INTO pessoa (nome, cpf, data_nascimento, nacionalidade) VALUES
+('Szymon Marciniak', '22222222221', '1981-01-07', 'Polonesa'),
+('Daniele Orsato', '22222222222', '1975-11-23', 'Italiana');
+
+-- ==========================================
+-- ÁRBITROS
+-- ==========================================
+
+INSERT INTO arbitro (id_pessoa, categoria) VALUES
+(19, 'FIFA Elite'),
+(20, 'FIFA Elite');
+
+-- ==========================================
+-- ESTÁDIOS
+-- ==========================================
+
+INSERT INTO estadio (nome_estadio, cidade, capacidade) VALUES
+('MetLife Stadium', 'New Jersey', 82500),
+('AT&T Stadium', 'Arlington', 80000),
+('SoFi Stadium', 'Los Angeles', 70240);
+
+-- ==========================================
+-- CLASSIFICAÇÃO
+-- ==========================================
+
+INSERT INTO classificacao
+(id_time, pontos, vitorias, empates, derrotas, saldo_gols)
+VALUES
+(1, 9, 3, 0, 0, 7),
+(2, 7, 2, 1, 0, 5),
+(3, 7, 2, 1, 0, 4),
+(4, 6, 2, 0, 1, 3),
+(5, 4, 1, 1, 1, 1),
+(6, 4, 1, 1, 1, 0);
+
+-- ==========================================
+-- JOGOS
+-- ==========================================
+
+INSERT INTO jogo
+(data_jogo, hora_jogo, fase, id_arbitro, id_estadio, time_casa, time_visitante)
+VALUES
+('2026-06-15', '16:00:00', 'Fase de Grupos', 19, 1, 1, 2),
+('2026-06-16', '20:00:00', 'Fase de Grupos', 20, 2, 3, 4),
+('2026-06-17', '18:00:00', 'Fase de Grupos', 19, 3, 5, 6);
+
+-- ==========================================
+-- RESULTADOS
+-- ==========================================
+
+INSERT INTO resultado
+(gols_time_casa, gols_time_visitante, id_jogo)
+VALUES
+(2, 1, 1),
+(3, 2, 2),
+(1, 1, 3);
+
+-- ==========================================
+-- CONSULTAS DE TESTE
+-- ==========================================
+
+-- Ver classificação
+SELECT * FROM classificacao;
+
+-- Ver jogadores por seleção
+SELECT
+    t.nome_time,
+    p.nome,
+    j.numero_camisa,
+    j.posicao
+FROM jogador j
+JOIN pessoa p ON p.id_pessoa = j.id_pessoa
+JOIN time t ON t.id_time = j.id_time
+ORDER BY t.nome_time, j.numero_camisa;
+
+-- Ver resultados dos jogos
+SELECT
+    tc.nome_time AS time_casa,
+    r.gols_time_casa,
+    tv.nome_time AS time_visitante,
+    r.gols_time_visitante
+FROM resultado r
+JOIN jogo j ON j.id_jogo = r.id_jogo
+JOIN time tc ON tc.id_time = j.time_casa
+JOIN time tv ON tv.id_time = j.time_visitante;
