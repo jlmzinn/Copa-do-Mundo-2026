@@ -155,7 +155,7 @@ Como uma partida envolve dois times distintos (casa e visitante) e ambos referen
 O resultado da partida foi modelado como entidade separada do jogo, permitindo representar partidas que ainda não ocorreram (sem resultado lançado) sem a necessidade de campos nulos dentro da própria tabela `JOGO`.
 
 **4. Jogadores e funcionários vinculados a um único time**
-No escopo atual (um campeonato específico), cada jogador e funcionário pertence a exatamente um time. Essa modelagem é suficiente para representar uma única edição do torneio, mas não preserva histórico de transferências entre temporadas (ver seção de extensões futuras).
+No escopo atual (um campeonato específico), cada jogador e funcionário pertence a exatamente um time. Essa modelagem é suficiente para representar uma única edição do torneio.
 
 ---
 
