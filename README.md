@@ -161,7 +161,6 @@ No escopo atual (um campeonato específico), cada jogador e funcionário pertenc
 
 ## 🔮 Possíveis extensões futuras
 
-- **Histórico de vínculo com times**: criar uma tabela associativa (ex: `HISTORICO_TIME`) com datas de início/fim, permitindo que um jogador ou funcionário tenha passado por múltiplos times ao longo do tempo.
 - **Eventos detalhados de jogo**: criar uma entidade `EVENTO_JOGO` para registrar gols (autor, minuto), cartões amarelos/vermelhos e substituições, hoje não contemplados em `RESULTADO`.
 - **Múltiplos árbitros por partida**: hoje o modelo contempla apenas um árbitro principal por jogo; poderia ser expandido para incluir árbitros assistentes e árbitro de VAR.
 
