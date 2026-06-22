@@ -21,7 +21,130 @@ A modelagem foi construída aplicando conceitos fundamentais da disciplina de Ba
 * Normalização de Dados
 
 ---
+# 🗂 Modelo Entidade-Relacionamento
 
+```mermaid
+erDiagram
+
+    PESSOA {
+        int id_pessoa PK
+        string nome
+        string cpf
+        date data_nascimento
+        string nacionalidade
+    }
+
+    PAIS {
+        int id_pais PK
+        string nome_pais
+        string continente
+    }
+
+    GRUPO {
+        int id_grupo PK
+        string nome_grupo
+    }
+
+    TIME {
+        int id_time PK
+        string nome_time
+        int id_pais FK
+        int id_grupo FK
+    }
+
+    JOGADOR {
+        int id_pessoa PK
+        int numero_camisa
+        string posicao
+        int id_time FK
+    }
+
+    FUNCIONARIO {
+        int id_pessoa PK
+        string cargo
+        decimal salario
+        int id_time FK
+    }
+
+    ARBITRO {
+        int id_pessoa PK
+        string categoria
+    }
+
+    ESTADIO {
+        int id_estadio PK
+        string nome_estadio
+        string cidade
+        int capacidade
+    }
+
+    JOGO {
+        int id_jogo PK
+        date data_jogo
+        string hora_jogo
+        string fase
+        int id_arbitro FK
+        int id_estadio FK
+        int time_casa FK
+        int time_visitante FK
+    }
+
+    RESULTADO {
+        int id_resultado PK
+        int gols_time_casa
+        int gols_time_visitante
+        int id_jogo FK
+    }
+
+    CLASSIFICACAO {
+        int id_classificacao PK
+        int id_time FK
+        int pontos
+        int vitorias
+        int empates
+        int derrotas
+        int saldo_gols
+    }
+
+    PESSOA ||--o| JOGADOR : especializacao
+    PESSOA ||--o| FUNCIONARIO : especializacao
+    PESSOA ||--o| ARBITRO : especializacao
+
+    PAIS ||--o{ TIME : possui
+    GRUPO ||--o{ TIME : contem
+
+    TIME ||--o{ JOGADOR : possui
+    TIME ||--o{ FUNCIONARIO : possui
+    TIME ||--|| CLASSIFICACAO : classificado
+
+    ESTADIO ||--o{ JOGO : recebe
+
+    TIME ||--o{ JOGO : time_casa
+    TIME ||--o{ JOGO : time_visitante
+
+    ARBITRO ||--o{ JOGO : arbitra
+
+    JOGO ||--|| RESULTADO : gera
+```
+
+### Resumo do Modelo
+
+O banco de dados foi estruturado para representar os principais elementos da Copa do Mundo 2026.
+
+* **PAIS** representa os países participantes.
+* **TIME** representa as seleções nacionais vinculadas aos seus países e grupos.
+* **GRUPO** organiza os times na fase de grupos.
+* **JOGADOR** armazena os atletas pertencentes a cada seleção.
+* **FUNCIONARIO** representa a comissão técnica e demais membros da equipe.
+* **ARBITRO** representa os responsáveis pela arbitragem das partidas.
+* **ESTADIO** armazena os locais onde os jogos são realizados.
+* **JOGO** registra as partidas da competição.
+* **RESULTADO** guarda os placares dos jogos.
+* **CLASSIFICACAO** mantém a pontuação e o desempenho dos times durante o torneio.
+
+A utilização da entidade **PESSOA** permite aplicar o conceito de especialização, evitando redundância de dados comuns entre jogadores, funcionários e árbitros.
+
+---
 # 🎯 Objetivos
 
 O projeto tem como principais objetivos:
