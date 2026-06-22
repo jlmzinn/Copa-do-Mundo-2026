@@ -466,6 +466,8 @@ permitindo acompanhar a classificação dos grupos da Copa do Mundo.
 * Mermaid ER Diagram
 * Markdown
 * Modelagem Conceitual de Banco de Dados
+* Comando em PostgreSQL
+* Supabase para INSERT, CREATE TABLE e Consultas e Testes.
 
 ---
 
