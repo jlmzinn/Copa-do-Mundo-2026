@@ -461,20 +461,6 @@ permitindo acompanhar a classificação dos grupos da Copa do Mundo.
 
 ---
 
-# 🚀 Possíveis Melhorias Futuras
-
-O projeto pode ser expandido para incluir:
-
-* Gols marcados por jogador;
-* Cartões amarelos e vermelhos;
-* Estatísticas individuais;
-* Histórico de transferências;
-* Árbitro de vídeo (VAR);
-* Fases eliminatórias detalhadas;
-* Ranking mundial das seleções.
-
----
-
 # 🛠 Tecnologias Utilizadas
 
 * Mermaid ER Diagram
