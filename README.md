@@ -478,7 +478,7 @@ Projeto desenvolvido para a disciplina de Banco de Dados.
 **Tema:** Copa do Mundo FIFA 2026
 
 **Aluno:** Juan Lima Machado
----
+
 **Aluno:** Isac
 
 **Curso:** Ciência da Computação
