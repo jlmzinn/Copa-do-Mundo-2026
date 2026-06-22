@@ -1,1 +1,28 @@
+-- ==========================================
+-- CONSULTAS DE TESTE
+-- ==========================================
 
+-- Ver classificação
+SELECT * FROM classificacao;
+
+-- Ver jogadores por seleção
+SELECT
+    t.nome_time,
+    p.nome,
+    j.numero_camisa,
+    j.posicao
+FROM jogador j
+JOIN pessoa p ON p.id_pessoa = j.id_pessoa
+JOIN time t ON t.id_time = j.id_time
+ORDER BY t.nome_time, j.numero_camisa;
+
+-- Ver resultados dos jogos
+SELECT
+    tc.nome_time AS time_casa,
+    r.gols_time_casa,
+    tv.nome_time AS time_visitante,
+    r.gols_time_visitante
+FROM resultado r
+JOIN jogo j ON j.id_jogo = r.id_jogo
+JOIN time tc ON tc.id_time = j.time_casa
+JOIN time tv ON tv.id_time = j.time_visitante;
