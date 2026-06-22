@@ -1,173 +1,373 @@
-# 🏆 Sistema de Gerenciamento de Campeonato de Futebol
+# 🏆 Sistema de Gerenciamento da Copa do Mundo 2026
 
-Projeto de modelagem de banco de dados para um sistema de gerenciamento de campeonato de futebol, contemplando grupos, times, jogadores, comissão técnica, árbitros, estádios, jogos e resultados.
-
----
-
-## 📋 Sumário
-
-- [Sobre o projeto](#-sobre-o-projeto)
-- [Objetivos](#-objetivos)
-- [Modelo Entidade-Relacionamento](#-modelo-entidade-relacionamento)
-- [Descrição das entidades](#-descrição-das-entidades)
-- [Decisões de modelagem](#-decisões-de-modelagem)
-- [Possíveis extensões futuras](#-possíveis-extensões-futuras)
-- [Tecnologias utilizadas](#-tecnologias-utilizadas)
-- [Autor](#-autor)
+Projeto de modelagem de banco de dados desenvolvido para representar as informações da Copa do Mundo FIFA 2026, contemplando países participantes, seleções, jogadores, grupos, partidas, resultados e classificação das equipes.
 
 ---
 
-## 📖 Sobre o projeto
+# 📖 Sobre o Projeto
 
-Este projeto consiste na modelagem conceitual de um banco de dados relacional para gerenciar as informações de um campeonato de futebol, incluindo o cadastro de times organizados por grupos, pessoas (que podem atuar como jogadores, membros da comissão técnica/funcionários ou árbitros), estádios, partidas e seus respectivos resultados.
+Este projeto consiste na modelagem conceitual de um banco de dados relacional para gerenciar os principais dados de uma edição da Copa do Mundo.
 
-O modelo foi desenvolvido como solução para a disciplina de **Banco de Dados**, com foco na aplicação prática dos conceitos de:
+O sistema foi desenvolvido com o objetivo de armazenar e organizar informações relacionadas aos países participantes, seleções nacionais, jogadores, comissão técnica, árbitros, estádios, jogos, resultados e classificação dos times durante a competição.
 
-- Entidades e relacionamentos
-- Cardinalidade
-- Chaves primárias (PK) e estrangeiras (FK)
-- Generalização/especialização (herança em modelagem ER)
+A modelagem foi construída aplicando conceitos fundamentais da disciplina de Banco de Dados, como:
 
----
-
-## 🎯 Objetivos
-
-- Representar de forma clara a estrutura de dados de um campeonato de futebol;
-- Evitar redundância de dados pessoais entre jogadores, funcionários e árbitros através de especialização;
-- Modelar corretamente relacionamentos entre times e partidas, incluindo o caso de duas referências de uma entidade para a mesma tabela (time da casa e visitante);
-- Aplicar boas práticas de modelagem conceitual antes da implementação física do banco de dados.
+* Entidades e Relacionamentos
+* Cardinalidade
+* Chaves Primárias (PK)
+* Chaves Estrangeiras (FK)
+* Generalização e Especialização
+* Integridade Referencial
+* Normalização de Dados
 
 ---
 
-## 🗂 Modelo Entidade-Relacionamento
+# 🎯 Objetivos
 
-```mermaid
-erDiagram
-    PESSOA {
-        int id_pessoa PK
-        string nome
-        string cpf
-        date data_nascimento
-        string nacionalidade
-    }
+O projeto tem como principais objetivos:
 
-    GRUPO {
-        int id_grupo PK
-        string nome_grupo
-    }
-
-    TIME {
-        int id_time PK
-        string nome_time
-        string pais
-        int id_grupo FK
-    }
-
-    JOGADOR {
-        int id_pessoa PK
-        int numero_camisa
-        string posicao
-        int id_time FK
-    }
-
-    FUNCIONARIO {
-        int id_pessoa PK
-        string cargo
-        decimal salario
-        int id_time FK
-    }
-
-    ARBITRO {
-        int id_pessoa PK
-        string categoria
-    }
-
-    ESTADIO {
-        int id_estadio PK
-        string nome_estadio
-        string cidade
-        int capacidade
-        string pais
-    }
-
-    JOGO {
-        int id_jogo PK
-        date data_jogo
-        string hora_jogo
-        string fase
-        int id_arbitro FK
-        int id_estadio FK
-        int time_casa FK
-        int time_visitante FK
-    }
-
-    RESULTADO {
-        int id_resultado PK
-        int gols_time_casa
-        int gols_time_visitante
-        int id_jogo FK
-    }
-
-    PESSOA ||--o| JOGADOR : especializacao
-    PESSOA ||--o| FUNCIONARIO : especializacao
-    PESSOA ||--o| ARBITRO : especializacao
-    GRUPO ||--o{ TIME : contem
-    TIME ||--o{ JOGADOR : possui
-    TIME ||--o{ FUNCIONARIO : possui
-    ESTADIO ||--o{ JOGO : recebe
-    TIME ||--o{ JOGO : time_casa
-    TIME ||--o{ JOGO : time_visitante
-    ARBITRO ||--o{ JOGO : arbitra
-    JOGO ||--|| RESULTADO : gera
-```
-
-> 💡 Esse bloco de código é renderizado automaticamente como diagrama em plataformas como GitHub, GitLab e editores com suporte a Mermaid.
+* Representar os países participantes da Copa do Mundo 2026;
+* Controlar informações das seleções nacionais;
+* Gerenciar jogadores e comissão técnica;
+* Registrar partidas e resultados;
+* Organizar os grupos da competição;
+* Armazenar a classificação das equipes;
+* Aplicar boas práticas de modelagem de banco de dados.
 
 ---
 
-## 🧩 Descrição das entidades
+# 🗂 Modelo Entidade-Relacionamento
 
-| Entidade | Descrição |
-|---|---|
-| **PESSOA** | Entidade genérica que armazena os dados pessoais comuns a qualquer indivíduo cadastrado no sistema. |
-| **JOGADOR** | Especialização de Pessoa. Representa um atleta vinculado a um time, com número de camisa e posição. |
-| **FUNCIONARIO** | Especialização de Pessoa. Representa membros da comissão técnica ou demais cargos administrativos de um time. |
-| **ARBITRO** | Especialização de Pessoa. Representa os árbitros responsáveis por conduzir as partidas. |
-| **GRUPO** | Agrupamento de times dentro da fase de grupos do campeonato. |
-| **TIME** | Representa uma equipe participante, vinculada a um grupo. |
-| **ESTADIO** | Local físico onde as partidas são realizadas. |
-| **JOGO** | Representa uma partida, vinculando dois times (casa e visitante), um árbitro e um estádio. |
-| **RESULTADO** | Armazena o placar final de uma partida específica. |
+## Entidades Principais
 
----
+### PAIS
 
-## 🧠 Decisões de modelagem
+Representa os países participantes da competição.
 
-**1. Generalização/Especialização (Pessoa → Jogador, Funcionário, Árbitro)**
-Optou-se por centralizar os dados pessoais comuns (nome, CPF, nascimento, nacionalidade) na entidade `PESSOA`, evitando duplicação de informação. Cada especialização herda a chave primária da entidade-mãe (`id_pessoa`) como sua própria PK e FK.
+**Atributos:**
 
-A cardinalidade entre `PESSOA` e cada especialização é **`||--o|`** (um-para-zero-ou-um), pois uma pessoa cadastrada não é obrigatoriamente jogador, funcionário e árbitro ao mesmo tempo — ela pode assumir apenas um desses papéis, ou nenhum.
-
-**2. Relacionamento duplo entre TIME e JOGO**
-Como uma partida envolve dois times distintos (casa e visitante) e ambos referenciam a mesma tabela `TIME`, foram criadas duas chaves estrangeiras separadas (`time_casa` e `time_visitante`) dentro de `JOGO`, em vez de uma única FK ambígua.
-
-**3. Separação entre JOGO e RESULTADO**
-O resultado da partida foi modelado como entidade separada do jogo, permitindo representar partidas que ainda não ocorreram (sem resultado lançado) sem a necessidade de campos nulos dentro da própria tabela `JOGO`.
-
-**4. Jogadores e funcionários vinculados a um único time**
-No escopo atual (um campeonato específico), cada jogador e funcionário pertence a exatamente um time. Essa modelagem é suficiente para representar uma única edição do torneio.
+* id_pais (PK)
+* nome_pais
+* continente
 
 ---
 
-## 🛠 Tecnologias utilizadas
+### GRUPO
 
-- **Diagramação:** [Mermaid.js](https://mermaid.js.org/) (sintaxe `erDiagram`)
-- **Documentação:** Markdown
+Representa os grupos da fase inicial da Copa do Mundo.
+
+**Atributos:**
+
+* id_grupo (PK)
+* nome_grupo
+
+Exemplos:
+
+* Grupo A
+* Grupo B
+* Grupo C
 
 ---
 
-## 👤 Autor
+### TIME
 
-Desenvolvido como trabalho acadêmico da disciplina de Banco de Dados.
+Representa uma seleção nacional participante do torneio.
 
-*(Juan Lima Machado, Ciência da Computação/2º Período da Afya-São Lucas Porto velho-RO.)*
+**Atributos:**
+
+* id_time (PK)
+* nome_time
+* id_pais (FK)
+* id_grupo (FK)
+
+Cada time pertence a um país e a um grupo.
+
+---
+
+### PESSOA
+
+Entidade genérica utilizada para evitar redundância de dados.
+
+**Atributos:**
+
+* id_pessoa (PK)
+* nome
+* cpf
+* data_nascimento
+* nacionalidade
+
+A partir desta entidade são derivadas as especializações:
+
+* Jogador
+* Funcionário
+* Árbitro
+
+---
+
+### JOGADOR
+
+Representa um atleta pertencente a uma seleção.
+
+**Atributos:**
+
+* id_pessoa (PK/FK)
+* numero_camisa
+* posicao
+* id_time (FK)
+
+---
+
+### FUNCIONARIO
+
+Representa membros da comissão técnica ou equipe administrativa.
+
+**Atributos:**
+
+* id_pessoa (PK/FK)
+* cargo
+* salario
+* id_time (FK)
+
+---
+
+### ARBITRO
+
+Representa os árbitros responsáveis pelas partidas.
+
+**Atributos:**
+
+* id_pessoa (PK/FK)
+* categoria
+
+---
+
+### ESTADIO
+
+Representa os locais onde os jogos são realizados.
+
+**Atributos:**
+
+* id_estadio (PK)
+* nome_estadio
+* cidade
+* capacidade
+
+---
+
+### JOGO
+
+Representa uma partida da Copa do Mundo.
+
+**Atributos:**
+
+* id_jogo (PK)
+* data_jogo
+* hora_jogo
+* fase
+* id_arbitro (FK)
+* id_estadio (FK)
+* time_casa (FK)
+* time_visitante (FK)
+
+---
+
+### RESULTADO
+
+Armazena o placar final das partidas.
+
+**Atributos:**
+
+* id_resultado (PK)
+* gols_time_casa
+* gols_time_visitante
+* id_jogo (FK)
+
+---
+
+### CLASSIFICACAO
+
+Representa o desempenho de cada seleção dentro da competição.
+
+**Atributos:**
+
+* id_classificacao (PK)
+* id_time (FK)
+* pontos
+* vitorias
+* empates
+* derrotas
+* saldo_gols
+
+Essa entidade permite acompanhar a posição dos times em seus respectivos grupos.
+
+---
+
+# 🔗 Relacionamentos
+
+## País → Time
+
+Um país pode possuir uma seleção participante.
+
+Relacionamento:
+
+PAIS (1) → (N) TIME
+
+---
+
+## Grupo → Time
+
+Um grupo contém vários times.
+
+Relacionamento:
+
+GRUPO (1) → (N) TIME
+
+---
+
+## Time → Jogador
+
+Um time possui vários jogadores.
+
+Relacionamento:
+
+TIME (1) → (N) JOGADOR
+
+---
+
+## Time → Funcionário
+
+Um time possui vários funcionários.
+
+Relacionamento:
+
+TIME (1) → (N) FUNCIONARIO
+
+---
+
+## Time → Classificação
+
+Cada time possui uma classificação.
+
+Relacionamento:
+
+TIME (1) → (1) CLASSIFICACAO
+
+---
+
+## Estádio → Jogo
+
+Um estádio pode receber várias partidas.
+
+Relacionamento:
+
+ESTADIO (1) → (N) JOGO
+
+---
+
+## Árbitro → Jogo
+
+Um árbitro pode apitar várias partidas.
+
+Relacionamento:
+
+ARBITRO (1) → (N) JOGO
+
+---
+
+## Jogo → Resultado
+
+Cada jogo possui um resultado.
+
+Relacionamento:
+
+JOGO (1) → (1) RESULTADO
+
+---
+
+# 🧠 Decisões de Modelagem
+
+## Generalização e Especialização
+
+A entidade PESSOA foi criada para evitar repetição de informações.
+
+Dados como:
+
+* nome
+* CPF
+* data de nascimento
+* nacionalidade
+
+são armazenados apenas uma vez.
+
+As entidades JOGADOR, FUNCIONARIO e ARBITRO herdam essas informações através de especialização.
+
+---
+
+## Separação entre Jogo e Resultado
+
+A entidade RESULTADO foi separada da entidade JOGO para permitir o cadastro antecipado das partidas.
+
+Assim, jogos futuros podem existir sem que seja necessário informar um placar.
+
+---
+
+## Classificação Independente
+
+A entidade CLASSIFICACAO foi criada para representar a tabela de desempenho das seleções.
+
+Ela armazena:
+
+* Pontuação
+* Vitórias
+* Empates
+* Derrotas
+* Saldo de gols
+
+permitindo acompanhar a classificação dos grupos da Copa do Mundo.
+
+---
+
+# 📊 Benefícios da Modelagem
+
+* Redução de redundância de dados;
+* Melhor organização das informações;
+* Facilidade para consultas SQL;
+* Facilidade para expansão futura;
+* Maior integridade dos dados;
+* Estrutura compatível com sistemas reais de competições esportivas.
+
+---
+
+# 🚀 Possíveis Melhorias Futuras
+
+O projeto pode ser expandido para incluir:
+
+* Gols marcados por jogador;
+* Cartões amarelos e vermelhos;
+* Estatísticas individuais;
+* Histórico de transferências;
+* Árbitro de vídeo (VAR);
+* Fases eliminatórias detalhadas;
+* Ranking mundial das seleções.
+
+---
+
+# 🛠 Tecnologias Utilizadas
+
+* Mermaid ER Diagram
+* Markdown
+* Modelagem Conceitual de Banco de Dados
+
+---
+
+# 👨‍💻 Autor
+
+Projeto desenvolvido para a disciplina de Banco de Dados.
+
+**Tema:** Copa do Mundo FIFA 2026
+
+**Aluno:** (Seu Nome)
+
+**Curso:** (Seu Curso)
+
+**Instituição:** (Sua Instituição)
