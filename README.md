@@ -178,4 +178,4 @@ No escopo atual (um campeonato específico), cada jogador e funcionário pertenc
 
 Desenvolvido como trabalho acadêmico da disciplina de Banco de Dados.
 
-*(Adicione aqui seu nome, curso/turma e instituição.)*
+*(Juan Lima Machado, Ciência da Computação/2º Período e Afya-São Lucas Porto velho-RO.)*
