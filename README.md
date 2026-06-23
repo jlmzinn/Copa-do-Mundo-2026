@@ -222,6 +222,8 @@ Representa uma seleção nacional participante do torneio.
 * id_pais (FK → PAIS)
 * id_grupo (FK → GRUPO)
 
+> **Dependência de Existência:** `A entidade TIME possui dependência de existência em relação à entidade PAIS, pois um time só pode existir associado a um país cadastrado.`
+
 ---
 
 ### PESSOA
