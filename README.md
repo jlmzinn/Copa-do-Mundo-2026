@@ -337,12 +337,6 @@ Calcula automaticamente o desempenho de cada seleção a partir dos resultados d
 >
 > **Correção 2FN:** a tabela original não tinha `id_grupo`, criando uma dependência parcial implícita num torneio com múltiplos grupos. A VIEW já agrupa por `id_grupo` corretamente.
 
-Para consultar:
-
-```sql
-SELECT * FROM classificacao ORDER BY nome_grupo, pontos DESC, saldo_gols DESC;
-```
-
 ---
 
 # 🔗 Relacionamentos
