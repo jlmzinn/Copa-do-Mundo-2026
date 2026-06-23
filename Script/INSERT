@@ -1,1 +1,231 @@
+-- ==========================================
+-- CONTINENTES
+-- ==========================================
 
+INSERT INTO continente (nome_continente) VALUES
+('América do Norte'),
+('América do Sul'),
+('Europa');
+
+-- ==========================================
+-- CIDADES
+-- ==========================================
+
+INSERT INTO cidade (nome_cidade, estado_provincia, id_continente) VALUES
+('New York', 'New York', 1),
+('Los Angeles', 'California', 1),
+('Toronto', 'Ontario', 1),
+('Mexico City', 'Ciudad de México', 1);
+
+-- ==========================================
+-- PAÍSES
+-- ==========================================
+
+INSERT INTO pais (nome_pais, id_continente) VALUES
+('Brasil', 2),
+('Argentina', 2),
+('França', 3),
+('Espanha', 3),
+('Portugal', 3),
+('Inglaterra', 3),
+('Alemanha', 3),
+('Estados Unidos', 1);
+
+-- ==========================================
+-- GRUPOS
+-- ==========================================
+
+INSERT INTO grupo (nome_grupo) VALUES
+('A'),
+('B');
+
+-- ==========================================
+-- TIMES
+-- ==========================================
+
+INSERT INTO time (nome_time, id_pais, id_grupo) VALUES
+('Brasil', 1, 1),
+('Argentina', 2, 1),
+('França', 3, 1),
+('Espanha', 4, 1),
+('Portugal', 5, 2),
+('Inglaterra', 6, 2),
+('Alemanha', 7, 2),
+('Estados Unidos', 8, 2);
+
+-- ==========================================
+-- PESSOAS (JOGADORES)
+-- ==========================================
+
+INSERT INTO pessoa
+(nome, cpf, data_nascimento, nacionalidade)
+VALUES
+('Vinicius Junior', '11111111111', '2000-07-12', 'Brasileira'),
+('Rodrygo', '11111111112', '2001-01-09', 'Brasileira'),
+('Raphinha', '11111111113', '1996-12-14', 'Brasileira'),
+
+('Lionel Messi', '11111111114', '1987-06-24', 'Argentina'),
+('Julian Alvarez', '11111111115', '2000-01-31', 'Argentina'),
+('Enzo Fernandez', '11111111116', '2001-01-17', 'Argentina'),
+
+('Kylian Mbappe', '11111111117', '1998-12-20', 'Francesa'),
+('Ousmane Dembele', '11111111118', '1997-05-15', 'Francesa'),
+
+('Lamine Yamal', '11111111119', '2007-07-13', 'Espanhola'),
+('Pedri', '11111111120', '2002-11-25', 'Espanhola'),
+
+('Cristiano Ronaldo', '11111111121', '1985-02-05', 'Portuguesa'),
+('Bruno Fernandes', '11111111122', '1994-09-08', 'Portuguesa'),
+
+('Harry Kane', '11111111123', '1993-07-28', 'Inglesa'),
+('Jude Bellingham', '11111111124', '2003-06-29', 'Inglesa'),
+
+('Jamal Musiala', '11111111125', '2003-02-26', 'Alemã'),
+('Joshua Kimmich', '11111111126', '1995-02-08', 'Alemã'),
+
+('Christian Pulisic', '11111111127', '1998-09-18', 'Americana'),
+('Weston McKennie', '11111111128', '1998-08-28', 'Americana');
+
+-- ==========================================
+-- JOGADORES
+-- ==========================================
+
+INSERT INTO jogador
+(id_pessoa, id_time, numero_camisa, posicao)
+VALUES
+
+(1, 1, 7, 'Atacante'),
+(2, 1, 10, 'Atacante'),
+(3, 1, 11, 'Ponta'),
+
+(4, 2, 10, 'Atacante'),
+(5, 2, 9, 'Atacante'),
+(6, 2, 8, 'Meio-Campo'),
+
+(7, 3, 10, 'Atacante'),
+(8, 3, 11, 'Ponta'),
+
+(9, 4, 19, 'Atacante'),
+(10, 4, 8, 'Meio-Campo'),
+
+(11, 5, 7, 'Atacante'),
+(12, 5, 8, 'Meio-Campo'),
+
+(13, 6, 9, 'Atacante'),
+(14, 6, 10, 'Meio-Campo'),
+
+(15, 7, 10, 'Meio-Campo'),
+(16, 7, 6, 'Volante'),
+
+(17, 8, 10, 'Atacante'),
+(18, 8, 8, 'Meio-Campo');
+
+-- ==========================================
+-- ÁRBITROS
+-- ==========================================
+
+INSERT INTO pessoa
+(nome, cpf, data_nascimento, nacionalidade)
+VALUES
+('Szymon Marciniak', '22222222221', '1981-01-07', 'Polonesa'),
+('Daniele Orsato', '22222222222', '1975-11-23', 'Italiana');
+
+INSERT INTO arbitro
+(id_pessoa, categoria)
+VALUES
+(19, 'FIFA'),
+(20, 'FIFA');
+
+-- ==========================================
+-- FUNCIONÁRIOS (TÉCNICOS)
+-- ==========================================
+
+INSERT INTO pessoa
+(nome, cpf, data_nascimento, nacionalidade)
+VALUES
+('Carlo Ancelotti', '33333333331', '1959-06-10', 'Italiana'),
+('Lionel Scaloni', '33333333332', '1978-05-16', 'Argentina');
+
+INSERT INTO funcionario
+(id_pessoa, cargo, salario, id_time)
+VALUES
+(21, 'Treinador', 150000.00, 1),
+(22, 'Treinador', 150000.00, 2);
+
+-- ==========================================
+-- ESTÁDIOS
+-- ==========================================
+
+INSERT INTO estadio
+(nome_estadio, capacidade, id_cidade)
+VALUES
+('MetLife Stadium', 82500, 1),
+('SoFi Stadium', 70240, 2),
+('BMO Field', 30000, 3),
+('Estadio Azteca', 87523, 4);
+
+-- ==========================================
+-- JOGOS
+-- ==========================================
+
+INSERT INTO jogo
+(
+    data_jogo,
+    hora_jogo,
+    fase,
+    id_arbitro,
+    id_estadio,
+    time_casa,
+    time_visitante,
+    gols_time_casa,
+    gols_time_visitante
+)
+VALUES
+
+(
+    '2026-06-15',
+    '16:00',
+    'Fase de Grupos',
+    19,
+    1,
+    1,
+    2,
+    2,
+    1
+),
+
+(
+    '2026-06-16',
+    '19:00',
+    'Fase de Grupos',
+    20,
+    2,
+    3,
+    4,
+    1,
+    1
+),
+
+(
+    '2026-06-17',
+    '20:00',
+    'Fase de Grupos',
+    19,
+    4,
+    5,
+    6,
+    2,
+    0
+),
+
+(
+    '2026-06-18',
+    '18:00',
+    'Fase de Grupos',
+    20,
+    3,
+    7,
+    8,
+    3,
+    2
+);
