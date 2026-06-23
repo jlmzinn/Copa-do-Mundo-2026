@@ -1,4 +1,4 @@
-[Uploading README (1).md…]()
+
 # 🏆 Sistema de Gerenciamento da Copa do Mundo 2026
 
 Projeto de modelagem de banco de dados desenvolvido para representar as informações da Copa do Mundo FIFA 2026, contemplando países participantes, seleções, jogadores, grupos, partidas e classificação das equipes, com schema **normalizado até a BCNF**.
