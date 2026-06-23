@@ -1,87 +1,58 @@
 -- ==========================================
 -- COPA DO MUNDO 2026
--- Script de Criação das Tabelas
--- PostgreSQL
+-- SCRIPT CREATE TABLE
 -- ==========================================
 
--- ENUM PARA FASES DO TORNEIO
-CREATE TYPE fase_enum AS ENUM (
-    'Fase de Grupos',
-    'Oitavas de Final',
-    'Quartas de Final',
-    'Semifinal',
-    'Terceiro Lugar',
-    'Final'
-);
-
--- ==========================================
 -- CONTINENTE
--- ==========================================
-
 CREATE TABLE continente (
     id_continente SERIAL PRIMARY KEY,
-    nome_continente VARCHAR(100) NOT NULL UNIQUE
+    nome_continente VARCHAR(50) NOT NULL UNIQUE
 );
 
--- ==========================================
 -- CIDADE
--- ==========================================
-
 CREATE TABLE cidade (
     id_cidade SERIAL PRIMARY KEY,
     nome_cidade VARCHAR(100) NOT NULL,
     estado_provincia VARCHAR(100),
-    id_continente INTEGER NOT NULL,
+    id_continente INT NOT NULL,
 
     CONSTRAINT fk_cidade_continente
         FOREIGN KEY (id_continente)
         REFERENCES continente(id_continente)
 );
 
--- ==========================================
 -- PAIS
--- ==========================================
-
 CREATE TABLE pais (
     id_pais SERIAL PRIMARY KEY,
     nome_pais VARCHAR(100) NOT NULL UNIQUE,
-    id_continente INTEGER NOT NULL,
+    id_continente INT NOT NULL,
 
     CONSTRAINT fk_pais_continente
         FOREIGN KEY (id_continente)
         REFERENCES continente(id_continente)
 );
 
--- ==========================================
 -- GRUPO
--- ==========================================
-
 CREATE TABLE grupo (
     id_grupo SERIAL PRIMARY KEY,
-    nome_grupo VARCHAR(10) NOT NULL UNIQUE
+    nome_grupo CHAR(1) NOT NULL UNIQUE
 );
 
--- ==========================================
 -- PESSOA
--- ==========================================
-
 CREATE TABLE pessoa (
     id_pessoa SERIAL PRIMARY KEY,
     nome VARCHAR(150) NOT NULL,
-    cpf VARCHAR(14) UNIQUE,
+    cpf VARCHAR(14) NOT NULL UNIQUE,
     data_nascimento DATE NOT NULL,
-    nacionalidade VARCHAR(100)
+    nacionalidade VARCHAR(100) NOT NULL
 );
 
--- ==========================================
 -- TIME
--- ==========================================
-
 CREATE TABLE time (
     id_time SERIAL PRIMARY KEY,
     nome_time VARCHAR(100) NOT NULL,
-    id_pais INTEGER NOT NULL,
-    id_grupo INTEGER NOT NULL,
+    id_pais INT NOT NULL,
+    id_grupo INT NOT NULL,
 
     CONSTRAINT fk_time_pais
         FOREIGN KEY (id_pais)
@@ -92,16 +63,14 @@ CREATE TABLE time (
         REFERENCES grupo(id_grupo)
 );
 
--- ==========================================
 -- JOGADOR
--- Especialização de Pessoa
--- ==========================================
-
 CREATE TABLE jogador (
-    id_pessoa INTEGER PRIMARY KEY,
-    id_time INTEGER NOT NULL,
-    numero_camisa INTEGER NOT NULL,
+    id_pessoa INT,
+    id_time INT,
+    numero_camisa INT NOT NULL,
     posicao VARCHAR(50) NOT NULL,
+
+    PRIMARY KEY (id_pessoa, id_time),
 
     CONSTRAINT fk_jogador_pessoa
         FOREIGN KEY (id_pessoa)
@@ -111,20 +80,16 @@ CREATE TABLE jogador (
         FOREIGN KEY (id_time)
         REFERENCES time(id_time),
 
-    CONSTRAINT uk_numero_camisa
+    CONSTRAINT unq_numero_camisa
         UNIQUE (id_time, numero_camisa)
 );
 
--- ==========================================
 -- FUNCIONARIO
--- Especialização de Pessoa
--- ==========================================
-
 CREATE TABLE funcionario (
-    id_pessoa INTEGER PRIMARY KEY,
+    id_pessoa INT PRIMARY KEY,
     cargo VARCHAR(100) NOT NULL,
-    salario NUMERIC(10,2),
-    id_time INTEGER NOT NULL,
+    salario NUMERIC(10,2) NOT NULL,
+    id_time INT NOT NULL,
 
     CONSTRAINT fk_funcionario_pessoa
         FOREIGN KEY (id_pessoa)
@@ -132,16 +97,15 @@ CREATE TABLE funcionario (
 
     CONSTRAINT fk_funcionario_time
         FOREIGN KEY (id_time)
-        REFERENCES time(id_time)
+        REFERENCES time(id_time),
+
+    CONSTRAINT chk_salario
+        CHECK (salario > 0)
 );
 
--- ==========================================
 -- ARBITRO
--- Especialização de Pessoa
--- ==========================================
-
 CREATE TABLE arbitro (
-    id_pessoa INTEGER PRIMARY KEY,
+    id_pessoa INT PRIMARY KEY,
     categoria VARCHAR(50) NOT NULL,
 
     CONSTRAINT fk_arbitro_pessoa
@@ -149,41 +113,48 @@ CREATE TABLE arbitro (
         REFERENCES pessoa(id_pessoa)
 );
 
--- ==========================================
 -- ESTADIO
--- ==========================================
-
 CREATE TABLE estadio (
     id_estadio SERIAL PRIMARY KEY,
     nome_estadio VARCHAR(150) NOT NULL,
-    capacidade INTEGER NOT NULL,
-    id_cidade INTEGER NOT NULL,
+    capacidade INT NOT NULL,
+    id_cidade INT NOT NULL,
 
     CONSTRAINT fk_estadio_cidade
         FOREIGN KEY (id_cidade)
-        REFERENCES cidade(id_cidade)
+        REFERENCES cidade(id_cidade),
+
+    CONSTRAINT chk_capacidade
+        CHECK (capacidade > 0)
 );
 
--- ==========================================
 -- JOGO
--- ==========================================
-
 CREATE TABLE jogo (
     id_jogo SERIAL PRIMARY KEY,
 
     data_jogo DATE NOT NULL,
     hora_jogo TIME NOT NULL,
 
-    fase fase_enum NOT NULL,
+    fase VARCHAR(30) NOT NULL
+        CHECK (
+            fase IN (
+                'Grupos',
+                'Oitavas',
+                'Quartas',
+                'Semifinal',
+                'Terceiro Lugar',
+                'Final'
+            )
+        ),
 
-    id_arbitro INTEGER NOT NULL,
-    id_estadio INTEGER NOT NULL,
+    id_arbitro INT NOT NULL,
+    id_estadio INT NOT NULL,
 
-    time_casa INTEGER NOT NULL,
-    time_visitante INTEGER NOT NULL,
+    time_casa INT NOT NULL,
+    time_visitante INT NOT NULL,
 
-    gols_time_casa INTEGER DEFAULT 0,
-    gols_time_visitante INTEGER DEFAULT 0,
+    gols_time_casa INT DEFAULT 0,
+    gols_time_visitante INT DEFAULT 0,
 
     CONSTRAINT fk_jogo_arbitro
         FOREIGN KEY (id_arbitro)
