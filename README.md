@@ -415,7 +415,7 @@ Projeto desenvolvido para a disciplina de Banco de Dados.
 
 **Aluno:** Juan Lima Machado
 
-**Aluno:** Isac
+**Aluno:** Isac Alves de Lima Silva
 
 **Curso:** Ciência da Computação
 
