@@ -305,7 +305,7 @@ Representa uma partida da Copa do Mundo.
 * id_jogo (PK)
 * data_jogo (DATE)
 * hora_jogo (TIME)
-* fase (ENUM: `grupos`, `oitavas`, `quartas`, `semifinal`, `final`, `terceiro_lugar`)
+* fase (VARCHAR: `grupos`, `oitavas`, `quartas`, `semifinal`, `final`, `terceiro_lugar`)
 * id_arbitro (FK → ARBITRO)
 * id_estadio (FK → ESTADIO)
 * time_casa (FK → TIME)
@@ -316,7 +316,7 @@ Representa uma partida da Copa do Mundo.
 
 > **Agregação:** `A entidade JOGO representa uma agregação de relacionamentos entre TIMES, ESTÁDIO e ÁRBITRO, concentrando informações do evento esportivo.`
 > 
-> **Correção 1FN:** `fase` era `VARCHAR` livre, permitindo inconsistências como `"Fase de Grupos"` e `"fase de grupos"`. Substituído por `ENUM` com valores controlados.
+> **Correção 1FN:** `fase` era `VARCHAR` livre, permitindo inconsistências como `"Fase de Grupos"` e `"fase de grupos"`. Substituído por `(VARCHAR)` com valores controlados.
 >
 > **Correção BCNF:** a tabela `RESULTADO` foi eliminada. Ela tinha relação 1:1 com `JOGO` e `id_jogo` já seria chave suficiente — a separação não acrescentava semântica. Os gols foram movidos para dentro de `JOGO`, com `NULL` representando jogos futuros (substitui a justificativa original de separação).
 
