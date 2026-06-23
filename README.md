@@ -305,7 +305,7 @@ Representa uma partida da Copa do Mundo.
 * id_jogo (PK)
 * data_jogo (DATE)
 * hora_jogo (TIME)
-* fase (VARCHAR: `grupos`, `oitavas`, `quartas`, `semifinal`, `final`, `terceiro_lugar`)
+* fase fase (VARCHAR controlado por CHECK:Valores permitidos:Grupos, Oitavas, Quartas, Semifinal, Terceiro Lugar, Final)
 * id_arbitro (FK → ARBITRO)
 * id_estadio (FK → ESTADIO)
 * time_casa (FK → TIME)
