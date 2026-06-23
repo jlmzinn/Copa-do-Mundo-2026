@@ -96,7 +96,7 @@ erDiagram
         int id_jogo PK
         date data_jogo
         time hora_jogo
-        fase_enum fase
+        varchar fase
         int id_arbitro FK
         int id_estadio FK
         int time_casa FK
@@ -141,7 +141,7 @@ erDiagram
 * **FUNCIONARIO** representa a comissão técnica.
 * **ARBITRO** representa os árbitros das partidas.
 * **ESTADIO** armazena os locais dos jogos, com FK para CIDADE.
-* **JOGO** registra as partidas com resultado embutido (gols direto na tabela) e fase controlada por ENUM.
+* **JOGO** registra as partidas com resultado embutido (gols direto na tabela) e fase controlada por VARCHAR.
 * **CLASSIFICACAO** é uma VIEW calculada automaticamente a partir de JOGO — não armazena dados derivados.
 
 ---
@@ -388,7 +388,7 @@ Extrair `continente` de PAIS e `cidade` de ESTADIO elimina dependências transit
 
 | Forma Normal | Status | Principal correção |
 |---|---|---|
-| 1FN | ✅ Aplicada | `fase` tipado como ENUM; `hora_jogo` como TIME |
+| 1FN | ✅ Aplicada | `fase` tipado como VARCHAR; `hora_jogo` como TIME |
 | 2FN | ✅ Aplicada | Chave composta `(id_pessoa, id_time)` em JOGADOR; `id_grupo` em CLASSIFICACAO |
 | 3FN | ✅ Aplicada | CONTINENTE e CIDADE separados; CLASSIFICACAO virou VIEW |
 | BCNF | ✅ Aplicada | RESULTADO eliminada (relação 1:1 com JOGO) |
