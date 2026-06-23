@@ -311,6 +311,8 @@ Representa uma partida da Copa do Mundo.
 * gols_time_casa (NULL enquanto jogo não realizado)
 * gols_time_visitante (NULL enquanto jogo não realizado)
 
+* 
+> **Agregação:** `A entidade JOGO representa uma agregação de relacionamentos entre TIMES, ESTÁDIO e ÁRBITRO, concentrando informações do evento esportivo.
 > **Correção 1FN:** `fase` era `VARCHAR` livre, permitindo inconsistências como `"Fase de Grupos"` e `"fase de grupos"`. Substituído por `ENUM` com valores controlados.
 >
 > **Correção BCNF:** a tabela `RESULTADO` foi eliminada. Ela tinha relação 1:1 com `JOGO` e `id_jogo` já seria chave suficiente — a separação não acrescentava semântica. Os gols foram movidos para dentro de `JOGO`, com `NULL` representando jogos futuros (substitui a justificativa original de separação).
