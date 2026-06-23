@@ -314,7 +314,7 @@ Representa uma partida da Copa do Mundo.
 * gols_time_visitante (NULL enquanto jogo não realizado)
 
 
-> **Agregação:** `A entidade JOGO representa uma agregação de relacionamentos entre TIMES, ESTÁDIO e ÁRBITRO, concentrando informações do evento esportivo.
+> **Agregação:** `A entidade JOGO representa uma agregação de relacionamentos entre TIMES, ESTÁDIO e ÁRBITRO, concentrando informações do evento esportivo.`
 > 
 > **Correção 1FN:** `fase` era `VARCHAR` livre, permitindo inconsistências como `"Fase de Grupos"` e `"fase de grupos"`. Substituído por `ENUM` com valores controlados.
 >
