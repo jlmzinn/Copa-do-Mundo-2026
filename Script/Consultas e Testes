@@ -1,335 +1,245 @@
 -- ==========================================
--- CONSULTAS E TESTES
--- COPA DO MUNDO 2026
+-- CONSULTAS E TESTES - COPA DO MUNDO 2026
 -- ==========================================
 
--- =====================================================
--- CONSULTA 1 - TIMES E GRUPOS
--- =====================================================
+-- 1. Listar todos os continentes
+SELECT * FROM continente;
 
+-- 2. Listar todos os países
+SELECT * FROM pais;
+
+-- 3. Listar todas as cidades
+SELECT * FROM cidade;
+
+-- 4. Listar todos os grupos
+SELECT * FROM grupo;
+
+-- 5. Listar todos os times
+SELECT * FROM time;
+
+-- 6. Listar todas as pessoas
+SELECT * FROM pessoa;
+
+-- 7. Listar todos os jogadores
+SELECT * FROM jogador;
+
+-- 8. Listar todos os árbitros
+SELECT * FROM arbitro;
+
+-- 9. Listar todos os estádios
+SELECT * FROM estadio;
+
+-- 10. Listar todos os jogos
+SELECT * FROM jogo;
+
+-- ==========================================
+-- JOINS
+-- ==========================================
+
+-- 11. Jogadores e seus respectivos times
 SELECT
-    t.nome_time,
-    g.nome_grupo
-FROM time t
-JOIN grupo g
-    ON t.id_grupo = g.id_grupo
-ORDER BY g.nome_grupo, t.nome_time;
-
--- =====================================================
--- CONSULTA 2 - JOGADORES POR SELEÇÃO
--- =====================================================
-
-SELECT
-    t.nome_time,
-    p.nome,
+    p.nome AS jogador,
+    t.nome_time AS time,
     j.numero_camisa,
     j.posicao
 FROM jogador j
-JOIN pessoa p
-    ON p.id_pessoa = j.id_pessoa
-JOIN time t
-    ON t.id_time = j.id_time
-ORDER BY t.nome_time, j.numero_camisa;
+JOIN pessoa p ON p.id_pessoa = j.id_pessoa
+JOIN time t ON t.id_time = j.id_time
+ORDER BY t.nome_time;
 
--- =====================================================
--- CONSULTA 3 - TÉCNICOS DAS SELEÇÕES
--- =====================================================
+-- 12. Times e seus países
+SELECT
+    t.nome_time,
+    p.nome_pais
+FROM time t
+JOIN pais p ON p.id_pais = t.id_pais;
 
+-- 13. Países e continentes
+SELECT
+    p.nome_pais,
+    c.nome_continente
+FROM pais p
+JOIN continente c
+ON c.id_continente = p.id_continente;
+
+-- 14. Estádios e cidades
+SELECT
+    e.nome_estadio,
+    c.nome_cidade,
+    c.estado_provincia
+FROM estadio e
+JOIN cidade c
+ON c.id_cidade = e.id_cidade;
+
+-- 15. Funcionários e seus times
 SELECT
     p.nome,
     f.cargo,
+    f.salario,
     t.nome_time
 FROM funcionario f
-JOIN pessoa p
-    ON p.id_pessoa = f.id_pessoa
-JOIN time t
-    ON t.id_time = f.id_time;
+JOIN pessoa p ON p.id_pessoa = f.id_pessoa
+JOIN time t ON t.id_time = f.id_time;
 
--- =====================================================
--- CONSULTA 4 - ÁRBITROS
--- =====================================================
+-- ==========================================
+-- CONSULTAS DOS JOGOS
+-- ==========================================
 
-SELECT
-    p.nome,
-    a.categoria
-FROM arbitro a
-JOIN pessoa p
-    ON p.id_pessoa = a.id_pessoa;
-
--- =====================================================
--- CONSULTA 5 - JOGOS E PLACARES
--- =====================================================
-
-SELECT
-    tc.nome_time AS time_casa,
-    tv.nome_time AS visitante,
-    j.gols_time_casa,
-    j.gols_time_visitante
-FROM jogo j
-JOIN time tc
-    ON tc.id_time = j.time_casa
-JOIN time tv
-    ON tv.id_time = j.time_visitante;
-
--- =====================================================
--- CONSULTA 6 - JOGOS, ESTÁDIOS E ÁRBITROS
--- =====================================================
-
-SELECT
-    j.data_jogo,
-    tc.nome_time AS casa,
-    tv.nome_time AS visitante,
-    e.nome_estadio,
-    p.nome AS arbitro
-FROM jogo j
-JOIN time tc
-    ON tc.id_time = j.time_casa
-JOIN time tv
-    ON tv.id_time = j.time_visitante
-JOIN estadio e
-    ON e.id_estadio = j.id_estadio
-JOIN arbitro a
-    ON a.id_pessoa = j.id_arbitro
-JOIN pessoa p
-    ON p.id_pessoa = a.id_pessoa;
-
--- =====================================================
--- CONSULTA 7 - QUANTIDADE DE JOGADORES POR TIME
--- =====================================================
-
-SELECT
-    t.nome_time,
-    COUNT(*) AS quantidade_jogadores
-FROM jogador j
-JOIN time t
-    ON t.id_time = j.id_time
-GROUP BY t.nome_time
-ORDER BY quantidade_jogadores DESC;
-
--- =====================================================
--- CONSULTA 8 - PAÍS E CONTINENTE DE CADA SELEÇÃO
--- =====================================================
-
-SELECT
-    t.nome_time,
-    pa.nome_pais,
-    c.nome_continente
-FROM time t
-JOIN pais pa
-    ON pa.id_pais = t.id_pais
-JOIN continente c
-    ON c.id_continente = pa.id_continente;
-
--- =====================================================
--- CONSULTA 9 - TOTAL DE JOGOS POR ESTÁDIO
--- =====================================================
-
-SELECT
-    e.nome_estadio,
-    COUNT(j.id_jogo) AS total_jogos
-FROM estadio e
-LEFT JOIN jogo j
-    ON j.id_estadio = e.id_estadio
-GROUP BY e.nome_estadio;
-
--- =====================================================
--- CONSULTA 10 - SELEÇÕES INVICTAS
--- =====================================================
-
-SELECT
-    t.nome_time
-FROM time t
-WHERE NOT EXISTS (
-    SELECT 1
-    FROM jogo j
-    WHERE (
-        j.time_casa = t.id_time
-        AND j.gols_time_casa < j.gols_time_visitante
-    )
-    OR (
-        j.time_visitante = t.id_time
-        AND j.gols_time_visitante < j.gols_time_casa
-    )
-);
-
--- =====================================================
--- CONSULTA 11 - RANKING DE GOLS
--- =====================================================
-
-SELECT
-    t.nome_time,
-
-    COALESCE(
-        SUM(
-            CASE
-                WHEN j.time_casa = t.id_time
-                    THEN j.gols_time_casa
-                WHEN j.time_visitante = t.id_time
-                    THEN j.gols_time_visitante
-            END
-        ),0
-    ) AS gols_marcados
-
-FROM time t
-LEFT JOIN jogo j
-    ON t.id_time IN (j.time_casa, j.time_visitante)
-
-GROUP BY t.id_time, t.nome_time
-ORDER BY gols_marcados DESC;
-
--- =====================================================
--- CONSULTA 12 - RELATÓRIO COMPLETO DOS JOGOS
--- =====================================================
-
+-- 16. Jogos com nomes dos times
 SELECT
     j.id_jogo,
-    j.data_jogo,
     tc.nome_time AS time_casa,
     tv.nome_time AS time_visitante,
     j.gols_time_casa,
     j.gols_time_visitante,
-    e.nome_estadio,
-    c.nome_cidade,
+    j.fase
+FROM jogo j
+JOIN time tc ON tc.id_time = j.time_casa
+JOIN time tv ON tv.id_time = j.time_visitante;
+
+-- 17. Jogos com estádio
+SELECT
+    tc.nome_time AS time_casa,
+    tv.nome_time AS time_visitante,
+    e.nome_estadio
+FROM jogo j
+JOIN time tc ON tc.id_time = j.time_casa
+JOIN time tv ON tv.id_time = j.time_visitante
+JOIN estadio e ON e.id_estadio = j.id_estadio;
+
+-- 18. Jogos com árbitro
+SELECT
+    tc.nome_time AS time_casa,
+    tv.nome_time AS time_visitante,
     p.nome AS arbitro
 FROM jogo j
-JOIN time tc
-    ON tc.id_time = j.time_casa
-JOIN time tv
-    ON tv.id_time = j.time_visitante
+JOIN time tc ON tc.id_time = j.time_casa
+JOIN time tv ON tv.id_time = j.time_visitante
+JOIN arbitro a ON a.id_pessoa = j.id_arbitro
+JOIN pessoa p ON p.id_pessoa = a.id_pessoa;
+
+-- ==========================================
+-- CONSULTAS DE AGREGAÇÃO
+-- ==========================================
+
+-- 19. Quantidade de jogadores por time
+SELECT
+    t.nome_time,
+    COUNT(*) AS quantidade_jogadores
+FROM jogador j
+JOIN time t ON t.id_time = j.id_time
+GROUP BY t.nome_time
+ORDER BY quantidade_jogadores DESC;
+
+-- 20. Quantidade de times por grupo
+SELECT
+    g.nome_grupo,
+    COUNT(*) AS quantidade_times
+FROM time t
+JOIN grupo g ON g.id_grupo = t.id_grupo
+GROUP BY g.nome_grupo
+ORDER BY g.nome_grupo;
+
+-- 21. Quantidade de países por continente
+SELECT
+    c.nome_continente,
+    COUNT(*) AS quantidade_paises
+FROM pais p
+JOIN continente c
+ON c.id_continente = p.id_continente
+GROUP BY c.nome_continente;
+
+-- 22. Quantidade de jogos por estádio
+SELECT
+    e.nome_estadio,
+    COUNT(*) AS quantidade_jogos
+FROM jogo j
 JOIN estadio e
-    ON e.id_estadio = j.id_estadio
-JOIN cidade c
-    ON c.id_cidade = e.id_cidade
-JOIN arbitro a
-    ON a.id_pessoa = j.id_arbitro
+ON e.id_estadio = j.id_estadio
+GROUP BY e.nome_estadio;
+
+-- ==========================================
+-- FILTROS
+-- ==========================================
+
+-- 23. Jogadores atacantes
+SELECT
+    p.nome,
+    j.posicao
+FROM jogador j
 JOIN pessoa p
-    ON p.id_pessoa = a.id_pessoa;
+ON p.id_pessoa = j.id_pessoa
+WHERE j.posicao = 'Atacante';
 
--- =====================================================
+-- 24. Jogos da fase de grupos
+SELECT *
+FROM jogo
+WHERE fase = 'Grupos';
+
+-- 25. Times do Grupo A
+SELECT
+    t.nome_time
+FROM time t
+JOIN grupo g
+ON g.id_grupo = t.id_grupo
+WHERE g.nome_grupo = 'A';
+
+-- ==========================================
+-- ORDENAÇÃO
+-- ==========================================
+
+-- 26. Jogadores por ordem alfabética
+SELECT nome
+FROM pessoa
+ORDER BY nome;
+
+-- 27. Estádios por capacidade
+SELECT
+    nome_estadio,
+    capacidade
+FROM estadio
+ORDER BY capacidade DESC;
+
+-- ==========================================
 -- TESTES DE INTEGRIDADE
--- =====================================================
+-- ==========================================
 
--- TESTE 1
--- NÃO DEVE PERMITIR UM TIME JOGAR CONTRA ELE MESMO
+-- Deve falhar (CPF duplicado)
+INSERT INTO pessoa
+(nome, cpf, data_nascimento, nacionalidade)
+VALUES
+('Teste CPF', '111.111.111-11', '2000-01-01', 'Brasileiro');
 
-INSERT INTO jogo (
-    data_jogo,
-    hora_jogo,
-    fase,
-    id_arbitro,
-    id_estadio,
-    time_casa,
-    time_visitante
+-- Deve falhar (time da casa igual ao visitante)
+INSERT INTO jogo
+(
+data_jogo,
+hora_jogo,
+fase,
+id_arbitro,
+id_estadio,
+time_casa,
+time_visitante
 )
-VALUES (
-    '2026-07-01',
-    '20:00',
-    'Final',
-    19,
-    1,
-    1,
-    1
+VALUES
+(
+'2026-07-01',
+'18:00',
+'Grupos',
+13,
+1,
+1,
+1
 );
 
--- Resultado esperado:
--- ERRO devido ao CHECK (time_casa <> time_visitante)
+-- Deve falhar (salário negativo)
+INSERT INTO funcionario
+(id_pessoa, cargo, salario, id_time)
+VALUES
+(1, 'Auxiliar', -1000.00, 1);
 
--- =====================================================
-
--- TESTE 2
--- NÃO DEVE ACEITAR GOLS NEGATIVOS
-
-UPDATE jogo
-SET gols_time_casa = -5
-WHERE id_jogo = 1;
-
--- Resultado esperado:
--- ERRO devido ao CHECK de gols positivos
-
--- =====================================================
-
--- TESTE 3
--- NÃO DEVE PERMITIR CAMISA REPETIDA NO MESMO TIME
-
-INSERT INTO jogador (
-    id_pessoa,
-    id_time,
-    numero_camisa,
-    posicao
-)
-VALUES (
-    3,
-    1,
-    7,
-    'Atacante'
-);
-
--- Resultado esperado:
--- ERRO devido ao UNIQUE(id_time, numero_camisa)
-
--- =====================================================
-
--- TESTE 4
--- NÃO DEVE CADASTRAR TIME COM PAÍS INEXISTENTE
-
-INSERT INTO time (
-    nome_time,
-    id_pais,
-    id_grupo
-)
-VALUES (
-    'Seleção Fantasma',
-    999,
-    1
-);
-
--- Resultado esperado:
--- ERRO de chave estrangeira
-
--- =====================================================
-
--- TESTE 5
--- NÃO DEVE CADASTRAR JOGO COM ÁRBITRO INEXISTENTE
-
-INSERT INTO jogo (
-    data_jogo,
-    hora_jogo,
-    fase,
-    id_arbitro,
-    id_estadio,
-    time_casa,
-    time_visitante
-)
-VALUES (
-    '2026-07-15',
-    '18:00',
-    'Semifinal',
-    999,
-    1,
-    1,
-    2
-);
-
--- Resultado esperado:
--- ERRO de chave estrangeira
-
--- =====================================================
-
--- TESTE 6
--- NÃO DEVE CADASTRAR JOGADOR SEM TIME
-
-INSERT INTO jogador (
-    id_pessoa,
-    id_time,
-    numero_camisa,
-    posicao
-)
-VALUES (
-    1,
-    999,
-    99,
-    'Atacante'
-);
-
--- Resultado esperado:
--- ERRO de chave estrangeira
+-- Deve falhar (camisa repetida no mesmo time)
+INSERT INTO jogador
+(id_pessoa, id_time, numero_camisa, posicao)
+VALUES
+(1, 1, 7, 'Atacante');
