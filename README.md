@@ -1,4 +1,4 @@
-[README_Copa_Mundo_2026.md](https://github.com/user-attachments/files/29232272/README_Copa_Mundo_2026.md)
+
 # 🏆 Sistema de Gerenciamento da Copa do Mundo FIFA 2026
 
 ## 📖 Descrição do Projeto
